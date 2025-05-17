@@ -73,26 +73,6 @@ export const submitAnswer = async (req, res) => {
   }
 };
 
-export const saievalall = async(req,res)=>{
-
-  const interview = await Interview.findById('67e160e7bd9bbc06d8ab1e86');
-
-    
-      // Evaluate all answers at once
-      const evaluationPrompt = interview.questions.map(q => ({
-        question: q.question,
-        answer: q.userResponse
-      }));
-    
-      console.log('sai all eval completed')
-
-      const feedbackResults = await evaluateAnswer(evaluationPrompt);
-      console.log(feedbackResults.evaluation[0].feedback)
-
-      res.status(200).json({ result:feedbackResults });
-
-
-};
 
 export const getInterviewDetails = async (req, res) => {
   try {
