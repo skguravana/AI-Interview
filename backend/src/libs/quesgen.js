@@ -1,8 +1,5 @@
 import axios from "axios";
 import dotenv from 'dotenv';
-import ffmpeg from 'fluent-ffmpeg';
-import nodeSpeech from 'node-speech';
-const { SpeechClient } = nodeSpeech;
 
 
 dotenv.config();
