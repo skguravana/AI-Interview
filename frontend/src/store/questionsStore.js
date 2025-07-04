@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import axios from 'axios';
 
+const backend_url = "https://intelliview-vsl2.onrender.com"; 
+
 const useInterviewStore = create(
   persist(
     (set, get) => ({
@@ -14,8 +16,7 @@ const useInterviewStore = create(
         set({ isLoadingQuestions: true, error: null });
 
         try {
-          
-          const response = await axios.post("http://localhost:5000/aiinterview/interview/start", {
+          const response = await axios.post(`${backend_url}/aiinterview/interview/start`, {
             jobTitle,
             jobDescription,
             experience
@@ -35,69 +36,68 @@ const useInterviewStore = create(
         }
       },
 
-      submitAnswer: async (interviewId,questionIndex, responseText) => {
-        console.log(responseText);
+      submitAnswer: async (interviewId, questionIndex, responseText) => {
         try {
-          const result = await axios.post(`http://localhost:5000/aiinterview/interview/${interviewId}/submit-answer`, {
+          const result = await axios.post(`${backend_url}/aiinterview/interview/${interviewId}/submit-answer`, {
             questionIndex,
             responseText
           }, { withCredentials: true });
           return true;
-
         } catch (err) {
           console.error("Error submitting answer:", err);
           return false;
         }
       },
 
-      getInterviewFeedback:async(userId,interviewId)=>{
+      getInterviewFeedback: async (userId, interviewId) => {
         try {
-          const result = await axios.get(`http://localhost:5000/aiinterview/interview/feedback/${userId}/${interviewId}`,
-          { withCredentials: true });
+          const result = await axios.get(
+            `${backend_url}/aiinterview/interview/feedback/${userId}/${interviewId}`,
+            { withCredentials: true }
+          );
           return result;
-
         } catch (err) {
-          console.error("Error submitting answer:", err);
+          console.error("Error fetching feedback:", err);
         }
       },
 
       getPastInterviews: async (userId) => {
         try {
           const result = await axios.get(
-            `http://localhost:5000/aiinterview/interview/history/${userId}`,
-            { withCredentials: true } 
+            `${backend_url}/aiinterview/interview/history/${userId}`,
+            { withCredentials: true }
           );
-          console.log(result);
           return result;
         } catch (err) {
-          console.error("Error Fetching Interview History:", err);
+          console.error("Error fetching interview history:", err);
         }
       },
-      
-      getRetakeInterviewQuestions: async (interviewId)=>{
+
+      getRetakeInterviewQuestions: async (interviewId) => {
         try {
           const result = await axios.get(
-            `http://localhost:5000/aiinterview/interview/retake/${interviewId}`,
-            { withCredentials: true } 
+            `${backend_url}/aiinterview/interview/retake/${interviewId}`,
+            { withCredentials: true }
           );
-          console.log(result);
           set({
-            interviewId:interviewId,
-            interviewQuestions:result.data
-          })
+            interviewId: interviewId,
+            interviewQuestions: result.data
+          });
           return true;
         } catch (err) {
-          console.error("Error Fetching Retake Interview QUestions:", err);
+          console.error("Error fetching retake interview questions:", err);
           return false;
         }
       },
-      
-      
+
       resetInterview: () => {
         set({ interviewId: null, interviewQuestions: [] });
       }
     }),
-    { name: 'interview-store', storage: createJSONStorage(() => sessionStorage) }
+    {
+      name: 'interview-store',
+      storage: createJSONStorage(() => sessionStorage)
+    }
   )
 );
 
