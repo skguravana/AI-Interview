@@ -2,7 +2,9 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import axios from 'axios';
 
-const userAuthStore = create((set) => ({
+const backend_url = "https://intelliview-vsl2.onrender.com"; 
+
+const userAuthStore = create((set, get) => ({
     authUser: null,
     isSigningUp: false,
     isLoggingIn: false,
@@ -11,17 +13,16 @@ const userAuthStore = create((set) => ({
     checkAuth: async () => {
         try {
             set({ isCheckingAuth: true });
-    
-            const response = await fetch("http://localhost:5000/aiinterview/auth/check-auth", {
+            const response = await fetch(`${backend_url}/aiinterview/auth/check-auth`, {
                 method: "GET",
                 credentials: "include",
             });
-    
+
             if (!response.ok) {
                 set({ authUser: null });
                 return;
             }
-    
+
             const data = await response.json();
             set({ authUser: data });
         } catch (error) {
@@ -31,17 +32,14 @@ const userAuthStore = create((set) => ({
             set({ isCheckingAuth: false });
         }
     },
-    
 
     signUp: async (formData) => {
         try {
             set({ isSigningUp: true });
 
-            const response = await fetch("http://localhost:5000/aiinterview/auth/signup", {
+            const response = await fetch(`${backend_url}/aiinterview/auth/signup`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
                 credentials: "include",
             });
@@ -65,11 +63,9 @@ const userAuthStore = create((set) => ({
         try {
             set({ isLoggingIn: true });
 
-            const response = await fetch("http://localhost:5000/aiinterview/auth/login", {
+            const response = await fetch(`${backend_url}/aiinterview/auth/login`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
                 credentials: "include",
             });
@@ -91,18 +87,25 @@ const userAuthStore = create((set) => ({
 
     updateProfile: async (formData) => {
         try {
-            const response = await fetch("http://localhost:5000/aiinterview/user/update-profile", {
+            const response = await fetch(`${backend_url}/aiinterview/user/update-profile`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ bio: formData.bio, skills: formData.skills }),
+                body: JSON.stringify({
+                    bio: formData.bio,
+                    skills: formData.skills,
+                }),
             });
 
             const data = await response.json();
             if (response.ok) {
-                set({ authUser: { ...userAuthStore.getState().authUser, bio: data.bio, skills: data.skills } });
+                set({
+                    authUser: {
+                        ...get().authUser,
+                        bio: data.bio,
+                        skills: data.skills,
+                    },
+                });
                 console.log("Profile updated successfully:", data);
             } else {
                 console.error("Profile update failed:", data.message);
@@ -112,13 +115,12 @@ const userAuthStore = create((set) => ({
         }
     },
 
-    getProfile:async()=>{
-
+    getProfile: async () => {
     },
 
     logOut: async () => {
         try {
-            await fetch("http://localhost:5000/aiinterview/auth/logout", {
+            await fetch(`${backend_url}/aiinterview/auth/logout`, {
                 method: "POST",
                 credentials: "include",
             });
@@ -126,22 +128,7 @@ const userAuthStore = create((set) => ({
         } catch (error) {
             console.error("Logout failed:", error);
         }
-    },
-
-    // logOut: async (interviewId)=>{
-    //         try {
-    //           const result = await axios.get(
-    //             `http://localhost:5000/aiinterview/interview/evalall`,
-    //             { withCredentials: true } 
-    //           );
-    //           console.log('sai',result);
-    //           set({interviewQuestions:result.data})
-    //           return true;
-    //         } catch (err) {
-    //           console.error("Eval all:", err);
-    //           return false;
-    //         }
-    //       },
+    }
 }));
 
 export default userAuthStore;
