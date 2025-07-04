@@ -9,13 +9,13 @@
 ## ✨ Features
 
 - 🎤 **Real-Time Audio Input**  
-  Record and analyze candidate responses using the microphone.
+  Record and analyze candidate responses using the react speech recognition.
 
 - 💡 **Domain-Specific Questions**  
   Get dynamically generated questions tailored to a specific subject area or role.
 
 - 🤖 **AI-Powered Feedback**  
-  Feedback generated via GROQ and OpenAI Whisper APIs for clarity, structure, and content quality.
+  Feedback generated via GROQ  API for clarity, structure, and content quality.
 
 - 🔒 **Authentication**  
   Secure login and registration using JWT and hashed passwords (`bcrypt`).
@@ -29,8 +29,8 @@
 
 | Frontend     | Backend       | AI/ML Services      | Security      |
 |--------------|---------------|---------------------|---------------|
-| React.js     | Node.js       | OpenAI Whisper API  | JWT           |
-| HTML/CSS     | Express.js    | GROQ API            | bcrypt.js     |
+| React.js     | Node.js       |   GROQ API          | JWT           |
+| Tailwind     | Express.js    |                     | bcrypt.js     |
 |              | MongoDB       |                     |               |
 
 ---
