@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+const backend_url = "https://intelliview-vsl2.onrender.com"; 
+
 const useContactStore = create((set) => ({
   contacts: [],
   isSubmitting: false,
@@ -8,7 +10,7 @@ const useContactStore = create((set) => ({
   submitContact: async (formData) => {
     try {
       set({ isSubmitting: true, error: null });
-      const response = await fetch("http://localhost:5000/aiinterview/contact/submit", {
+      const response = await fetch(`${backend_url}/aiinterview/contact/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -30,10 +32,10 @@ const useContactStore = create((set) => ({
 
   fetchUserContacts: async () => {
     try {
-      const response = await fetch("http://localhost:5000/aiinterview/contact/history", {
+      const response = await fetch(`${backend_url}/aiinterview/contact/history`, {
         credentials: "include"
       });
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch contact history");
       }
