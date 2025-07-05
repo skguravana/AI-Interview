@@ -15,9 +15,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://ai-interview-frontend-je60.onrender.com/",
+    origin: true,
     credentials: true
 }));
+
 
 // Routes
 app.use('/aiinterview/auth', authRoutes);
