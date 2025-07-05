@@ -1,12 +1,12 @@
 {
   "headers": {
-    "/**": {
+    "/*": {
       "Access-Control-Allow-Origin": "*"
     }
   },
   "redirects": [
     {
-      "source": "/**",
+      "source": "/*",
       "destination": "/index.html",
       "statusCode": 200
     }
