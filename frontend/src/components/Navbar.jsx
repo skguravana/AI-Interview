@@ -161,7 +161,8 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => {
-                // Handle logout
+                logOut();
+                setIsMenuOpen(false);
               }}
               className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-blue-800 hover:border-white transition duration-150 ease-in-out"
             >
