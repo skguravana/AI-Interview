@@ -15,7 +15,7 @@ export default function Community() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/aiinterview/user/all", {
+        const response = await axios.get("https://intelliview-vsl2.onrender.com/aiinterview/user/all", {
           withCredentials: true
         });
         // Filter out the current user
